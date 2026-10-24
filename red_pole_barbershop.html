@@ -1,0 +1,1894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Red Pole Barbershop — Sharp Cuts, Clean Lines</title>
+  
+  <!-- Google Fonts: Alfa Slab One & Figtree -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Figtree:ital,wght@0,400;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* ==========================================================================
+       1. DESIGN SYSTEM & CONSTANTS (Navy, Barber Red, Pale Blue-Gray)
+       ========================================================================== */
+    :root {
+      --bg-main: #F7F9FC;
+      --navy-ink: #14213D;
+      --barber-red: #D62839;
+      --accent-blue: #2B59A6;
+      --pale-blue-gray: #E3EAF3;
+      --white: #FFFFFF;
+      --focus-outline: #D62839;
+      --font-heading: 'Alfa Slab One', cursive, Georgia, serif;
+      --font-body: 'Figtree', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --border-thick: 3px solid var(--navy-ink);
+      --border-thin: 2px solid var(--navy-ink);
+      --shadow-solid: 4px 4px 0px var(--navy-ink);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--navy-ink);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Accessibility Focus Styles */
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible {
+      outline: 3px solid var(--focus-outline) !important;
+      outline-offset: 3px !important;
+    }
+
+    /* Headings */
+    h1, h2, h3, h4, .font-heading {
+      font-family: var(--font-heading);
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      line-height: 1.15;
+      text-transform: uppercase;
+    }
+
+    /* Buttons & Interactive Elements */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.85rem 1.75rem;
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      color: var(--white);
+      background-color: var(--barber-red);
+      border: var(--border-thick);
+      box-shadow: var(--shadow-solid);
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+      user-select: none;
+      border-radius: 2px;
+    }
+
+    .btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px var(--navy-ink);
+      background-color: #be2030;
+    }
+
+    .btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0px var(--navy-ink);
+    }
+
+    .btn-secondary {
+      background-color: var(--accent-blue);
+      color: var(--white);
+    }
+
+    .btn-secondary:hover {
+      background-color: #214685;
+    }
+
+    .btn-outline {
+      background-color: var(--white);
+      color: var(--navy-ink);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--pale-blue-gray);
+    }
+
+    /* Checkered Strip Divider */
+    .checkered-divider {
+      height: 24px;
+      width: 100%;
+      background-image: 
+        linear-gradient(45deg, var(--navy-ink) 25%, transparent 25%), 
+        linear-gradient(-45deg, var(--navy-ink) 25%, transparent 25%), 
+        linear-gradient(45deg, transparent 75%, var(--navy-ink) 75%), 
+        linear-gradient(-45deg, transparent 75%, var(--navy-ink) 75%);
+      background-size: 20px 20px;
+      background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+      background-color: var(--white);
+      border-top: var(--border-thick);
+      border-bottom: var(--border-thick);
+    }
+
+    /* Layout Utility */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .section-padding {
+      padding: 4.5rem 0;
+    }
+
+    /* Badge */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.85rem;
+      border: var(--border-thin);
+      font-weight: 700;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      background-color: var(--white);
+      border-radius: 999px;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .status-open .status-dot { background-color: #10B981; }
+    .status-closed .status-dot { background-color: var(--barber-red); }
+
+    /* ==========================================================================
+       2. HEADER & NAVIGATION
+       ========================================================================== */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: var(--bg-main);
+      border-bottom: var(--border-thick);
+      padding: 0.85rem 0;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      color: var(--navy-ink);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo-accent {
+      color: var(--barber-red);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--navy-ink);
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      transition: color 0.15s ease;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0%;
+      height: 3px;
+      background-color: var(--barber-red);
+      transition: width 0.2s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* Mobile Hamburger Toggle */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: var(--border-thin);
+      padding: 0.5rem;
+      cursor: pointer;
+      color: var(--navy-ink);
+    }
+
+    .menu-toggle svg {
+      display: block;
+      width: 24px;
+      height: 24px;
+    }
+
+    /* ==========================================================================
+       3. HERO SECTION & PURE CSS BARBER POLE
+       ========================================================================== */
+    .hero-section {
+      background-color: var(--bg-main);
+      padding: 4rem 0 5rem;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5rem;
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      color: var(--navy-ink);
+      line-height: 1.05;
+    }
+
+    .hero-lead {
+      font-size: 1.2rem;
+      color: var(--navy-ink);
+      max-width: 540px;
+      font-weight: 500;
+    }
+
+    /* PURE CSS BARBER POLE SIGNATURE */
+    .pole-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .barber-pole-container {
+      width: 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      filter: drop-shadow(6px 6px 0px var(--navy-ink));
+    }
+
+    .pole-cap-top, .pole-cap-bottom {
+      width: 130px;
+      height: 26px;
+      background-color: var(--navy-ink);
+      border: var(--border-thick);
+      border-radius: 12px 12px 4px 4px;
+      position: relative;
+    }
+
+    .pole-cap-bottom {
+      border-radius: 4px 4px 12px 12px;
+    }
+
+    .pole-finial-top {
+      width: 40px;
+      height: 40px;
+      background: radial-gradient(circle, #ffd700 0%, #b8860b 100%);
+      border: var(--border-thick);
+      border-radius: 50%;
+      margin-bottom: -6px;
+      z-index: 2;
+    }
+
+    .pole-finial-bottom {
+      width: 30px;
+      height: 20px;
+      background-color: var(--navy-ink);
+      border-radius: 0 0 10px 10px;
+      margin-top: -2px;
+    }
+
+    .pole-body {
+      width: 100px;
+      height: 320px;
+      border-left: var(--border-thick);
+      border-right: var(--border-thick);
+      position: relative;
+      overflow: hidden;
+      background-color: var(--white);
+    }
+
+    /* Animated Diagonal Stripes */
+    .pole-stripes {
+      position: absolute;
+      top: -100px;
+      left: -50px;
+      width: 200px;
+      height: 600px;
+      background: repeating-linear-gradient(
+        -45deg,
+        var(--barber-red),
+        var(--barber-red) 25px,
+        var(--white) 25px,
+        var(--white) 50px,
+        var(--accent-blue) 50px,
+        var(--accent-blue) 75px,
+        var(--white) 75px,
+        var(--white) 100px
+      );
+      animation: scrollPole 3.5s linear infinite;
+    }
+
+    /* Glass Gloss Overlay for 3D Capsule Look */
+    .pole-glass {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        90deg,
+        rgba(255,255,255,0.4) 0%,
+        rgba(255,255,255,0) 25%,
+        rgba(0,0,0,0.1) 85%,
+        rgba(0,0,0,0.3) 100%
+      );
+      pointer-events: none;
+    }
+
+    @keyframes scrollPole {
+      0% {
+        transform: translateY(0);
+      }
+      100% {
+        transform: translateY(141.4px); /* Exact height of one full pattern repetition */
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .pole-stripes {
+        animation: none;
+      }
+    }
+
+    /* ==========================================================================
+       4. SERVICES & PRICES SECTION
+       ========================================================================== */
+    .services-section {
+      background-color: var(--pale-blue-gray);
+      border-bottom: var(--border-thick);
+    }
+
+    .section-header {
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      color: var(--navy-ink);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-subtitle {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #4B5563;
+    }
+
+    /* Editorial Asymmetric Grid */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.75rem;
+    }
+
+    .service-card {
+      background-color: var(--white);
+      border: var(--border-thick);
+      box-shadow: var(--shadow-solid);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: transform 0.2s ease;
+    }
+
+    .service-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .service-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+      gap: 0.5rem;
+    }
+
+    .service-name {
+      font-size: 1.35rem;
+      color: var(--navy-ink);
+    }
+
+    .service-price {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      color: var(--barber-red);
+      white-space: nowrap;
+    }
+
+    .service-desc {
+      color: var(--navy-ink);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+
+    .service-action {
+      margin-top: auto;
+    }
+
+    /* ==========================================================================
+       5. ABOUT SECTION
+       ========================================================================== */
+    .about-section {
+      background-color: var(--bg-main);
+    }
+
+    .about-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3.5rem;
+      align-items: center;
+    }
+
+    .about-box {
+      border: var(--border-thick);
+      background-color: var(--white);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-solid);
+      position: relative;
+    }
+
+    .about-box::before {
+      content: 'EST. 2024';
+      position: absolute;
+      top: -14px;
+      right: 20px;
+      background-color: var(--barber-red);
+      color: var(--white);
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      padding: 2px 10px;
+      border: var(--border-thin);
+    }
+
+    .about-text p {
+      margin-bottom: 1.25rem;
+      font-size: 1.05rem;
+    }
+
+    .about-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    .feature-list {
+      list-style: none;
+      margin-top: 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+    }
+
+    .feature-item svg {
+      color: var(--barber-red);
+      flex-shrink: 0;
+    }
+
+    /* ==========================================================================
+       6. GALLERY SECTION (Scroll Snap Strip)
+       ========================================================================== */
+    .gallery-section {
+      background-color: var(--pale-blue-gray);
+      border-top: var(--border-thick);
+      border-bottom: var(--border-thick);
+    }
+
+    .gallery-strip {
+      display: flex;
+      gap: 1.5rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding-bottom: 1.5rem;
+      scrollbar-width: thin;
+      scrollbar-color: var(--navy-ink) transparent;
+    }
+
+    .gallery-strip::-webkit-scrollbar {
+      height: 8px;
+    }
+    .gallery-strip::-webkit-scrollbar-thumb {
+      background-color: var(--navy-ink);
+      border-radius: 4px;
+    }
+
+    .gallery-item {
+      flex: 0 0 320px;
+      scroll-snap-align: start;
+      border: var(--border-thick);
+      background-color: var(--white);
+      box-shadow: var(--shadow-solid);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(20%);
+      transition: filter 0.3s ease;
+    }
+
+    .gallery-item:hover img {
+      filter: grayscale(0%);
+    }
+
+    .gallery-caption {
+      padding: 0.75rem 1rem;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      border-top: var(--border-thin);
+      background-color: var(--white);
+    }
+
+    /* ==========================================================================
+       7. REVIEWS SECTION
+       ========================================================================== */
+    .reviews-section {
+      background-color: var(--bg-main);
+    }
+
+    .reviews-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .sample-tag {
+      background-color: var(--navy-ink);
+      color: var(--white);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-radius: 2px;
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.75rem;
+    }
+
+    .review-card {
+      background-color: var(--white);
+      border: var(--border-thick);
+      box-shadow: var(--shadow-solid);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .review-quote {
+      font-style: italic;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      color: var(--navy-ink);
+    }
+
+    .review-author {
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .review-stars {
+      color: var(--barber-red);
+      font-size: 1rem;
+    }
+
+    /* ==========================================================================
+       8. BOOKING FORM SECTION (MAIN INTERACTIVE FEATURE)
+       ========================================================================== */
+    .booking-section {
+      background-color: var(--navy-ink);
+      color: var(--white);
+      border-top: var(--border-thick);
+      position: relative;
+    }
+
+    .booking-section .section-title {
+      color: var(--white);
+    }
+
+    .booking-section .section-subtitle {
+      color: var(--pale-blue-gray);
+    }
+
+    .booking-wrapper {
+      background-color: var(--white);
+      color: var(--navy-ink);
+      border: var(--border-thick);
+      box-shadow: 8px 8px 0px var(--barber-red);
+      padding: 2.5rem;
+      margin-top: 2rem;
+    }
+
+    .booking-form {
+      display: flex;
+      flex-direction: column;
+      gap: 2.25rem;
+    }
+
+    .form-step {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .step-label {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      color: var(--navy-ink);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .step-number {
+      background-color: var(--barber-red);
+      color: var(--white);
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      border: var(--border-thin);
+    }
+
+    /* Step 1: Radio Buttons for Services */
+    .service-radio-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .service-radio-card {
+      position: relative;
+    }
+
+    .service-radio-card input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .service-radio-label {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1rem;
+      border: var(--border-thick);
+      background-color: var(--bg-main);
+      cursor: pointer;
+      height: 100%;
+      transition: all 0.15s ease;
+    }
+
+    .service-radio-card input[type="radio"]:checked + .service-radio-label {
+      background-color: var(--pale-blue-gray);
+      border-color: var(--barber-red);
+      box-shadow: var(--shadow-solid);
+    }
+
+    .service-radio-name {
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+    }
+
+    .service-radio-price {
+      font-family: var(--font-heading);
+      color: var(--barber-red);
+      margin-top: 0.5rem;
+    }
+
+    /* Step 2: Date Selector Strip */
+    .date-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 0.75rem;
+      overflow-x: auto;
+      padding-bottom: 0.25rem;
+    }
+
+    .date-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0.75rem 0.5rem;
+      border: var(--border-thick);
+      background-color: var(--bg-main);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .date-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      background-color: #E5E7EB;
+      border-color: #9CA3AF;
+    }
+
+    .date-btn.selected {
+      background-color: var(--navy-ink);
+      color: var(--white);
+      box-shadow: 3px 3px 0px var(--barber-red);
+    }
+
+    .date-day-name {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .date-num {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      margin: 0.2rem 0;
+    }
+
+    .date-month {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    /* Step 3: Time Slot Grid */
+    .time-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+      gap: 0.6rem;
+    }
+
+    .time-slot-btn {
+      padding: 0.6rem 0.25rem;
+      border: var(--border-thin);
+      background-color: var(--bg-main);
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s ease;
+    }
+
+    .time-slot-btn:hover:not(:disabled) {
+      background-color: var(--pale-blue-gray);
+    }
+
+    .time-slot-btn:disabled {
+      opacity: 0.35;
+      text-decoration: line-through;
+      cursor: not-allowed;
+      background-color: #E5E7EB;
+    }
+
+    .time-slot-btn.selected {
+      background-color: var(--barber-red);
+      color: var(--white);
+      border-color: var(--navy-ink);
+    }
+
+    /* Step 4: Contact Inputs */
+    .input-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-group label {
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+    }
+
+    .form-group input {
+      padding: 0.8rem;
+      border: var(--border-thick);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      background-color: var(--bg-main);
+    }
+
+    /* Validation & Live Error Feedback */
+    .error-region {
+      background-color: #FEE2E2;
+      border: var(--border-thin);
+      border-color: var(--barber-red);
+      color: #991B1B;
+      padding: 0.85rem;
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: none;
+    }
+
+    .error-region:not(:empty) {
+      display: block;
+    }
+
+    /* Booking Confirmation Summary Card */
+    .confirmation-card {
+      display: none;
+      background-color: var(--bg-main);
+      border: var(--border-thick);
+      padding: 2rem;
+      text-align: center;
+      box-shadow: var(--shadow-solid);
+    }
+
+    .confirmation-card.active {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .summary-box {
+      width: 100%;
+      max-width: 420px;
+      background-color: var(--white);
+      border: var(--border-thick);
+      padding: 1.5rem;
+      text-align: left;
+      margin: 1rem 0;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px dashed var(--navy-ink);
+      font-size: 0.95rem;
+    }
+
+    .summary-row:last-child {
+      border-bottom: none;
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding-top: 0.8rem;
+    }
+
+    /* ==========================================================================
+       9. FOOTER SECTION
+       ========================================================================== */
+    .footer {
+      background-color: var(--navy-ink);
+      color: var(--white);
+      padding: 3.5rem 0 2rem;
+      border-top: var(--border-thick);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .footer-logo {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .footer-title {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      color: var(--barber-red);
+      margin-bottom: 1rem;
+    }
+
+    .footer-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    .footer-list a {
+      color: var(--pale-blue-gray);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .footer-list a:hover {
+      color: var(--white);
+      text-decoration: underline;
+    }
+
+    .copyright {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      font-size: 0.85rem;
+      color: #9CA3AF;
+    }
+
+    /* ==========================================================================
+       10. RESPONSIVE BREAKPOINTS
+       ========================================================================== */
+    @media (max-width: 900px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        text-align: left;
+      }
+
+      .pole-wrapper {
+        order: -1;
+      }
+
+      .about-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: var(--bg-main);
+        flex-direction: column;
+        padding: 1.5rem;
+        border-bottom: var(--border-thick);
+        box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+      }
+
+      .nav-links.mobile-open {
+        display: flex;
+      }
+
+      .header-cta {
+        display: none;
+      }
+
+      .input-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+     1. STICKY HEADER
+     ========================================================================== -->
+  <header class="header" role="banner">
+    <div class="container header-inner">
+      <a href="#" class="logo" aria-label="Red Pole Barbershop Home">
+        RED POLE <span class="logo-accent">BARBERSHOP</span>
+      </a>
+
+      <!-- Desktop Links -->
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-links" id="primary-nav">
+          <li><a href="#services">Services</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+          <li><a href="#booking">Booking</a></li>
+        </ul>
+      </nav>
+
+      <a href="#booking" class="btn header-cta">Book now</a>
+
+      <!-- Mobile Hamburger Toggle -->
+      <button class="menu-toggle" id="menu-toggle-btn" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle Navigation Menu">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+     2. HERO SECTION
+     ========================================================================== -->
+  <main>
+    <section class="hero-section" aria-labelledby="hero-heading">
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <!-- Live Status Indicator -->
+          <div id="status-indicator" class="status-badge status-open" aria-live="polite">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span id="status-text">Checking hours...</span>
+          </div>
+
+          <h1 id="hero-heading" class="hero-title">Sharp cuts.<br>Clean lines.<br>Zero waiting.</h1>
+          
+          <p class="hero-lead">
+            Traditional barbering engineered for modern schedules. Pure appointment-only precision, premium hot-towel finishes, and zero wasted time.
+          </p>
+
+          <a href="#booking" class="btn">Book now</a>
+        </div>
+
+        <!-- Pure CSS Animated Barber Pole -->
+        <div class="pole-wrapper" aria-hidden="true">
+          <div class="barber-pole-container">
+            <div class="pole-finial-top"></div>
+            <div class="pole-cap-top"></div>
+            <div class="pole-body">
+              <div class="pole-stripes"></div>
+              <div class="pole-glass"></div>
+            </div>
+            <div class="pole-cap-bottom"></div>
+            <div class="pole-finial-bottom"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Retro Checkered Divider -->
+    <div class="checkered-divider" aria-hidden="true"></div>
+
+    <!-- ==========================================================================
+       3. SERVICES & PRICES SECTION
+       ========================================================================== -->
+    <section id="services" class="services-section section-padding" aria-labelledby="services-heading">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="services-heading" class="section-title">Services & Menu</h2>
+          <p class="section-subtitle">Transparent pricing. No hidden fees. Full satisfaction.</p>
+        </div>
+
+        <div class="services-grid">
+          <!-- Service Card 1 -->
+          <article class="service-card">
+            <div>
+              <div class="service-header">
+                <h3 class="service-name">Haircut</h3>
+                <span class="service-price">$35</span>
+              </div>
+              <p class="service-desc">Precision custom haircut tailored to your head shape, finished with a crisp neck taper and razor lineup.</p>
+            </div>
+            <div class="service-action">
+              <button type="button" class="btn btn-outline select-service-btn" data-service-id="haircut" style="width: 100%;">Select Service</button>
+            </div>
+          </article>
+
+          <!-- Service Card 2 -->
+          <article class="service-card">
+            <div>
+              <div class="service-header">
+                <h3 class="service-name">Beard Trim</h3>
+                <span class="service-price">$25</span>
+              </div>
+              <p class="service-desc">Detailed beard sculpting, length reduction, straight-razor cheek line shaping, and soothing beard oil treatment.</p>
+            </div>
+            <div class="service-action">
+              <button type="button" class="btn btn-outline select-service-btn" data-service-id="beard" style="width: 100%;">Select Service</button>
+            </div>
+          </article>
+
+          <!-- Service Card 3 -->
+          <article class="service-card">
+            <div>
+              <div class="service-header">
+                <h3 class="service-name">Haircut + Beard</h3>
+                <span class="service-price">$55</span>
+              </div>
+              <p class="service-desc">Our ultimate signature combo. Full tailored haircut and beard sculpting complete with essential oil hot towel finish.</p>
+            </div>
+            <div class="service-action">
+              <button type="button" class="btn btn-secondary select-service-btn" data-service-id="combo" style="width: 100%;">Select Service</button>
+            </div>
+          </article>
+
+          <!-- Service Card 4 -->
+          <article class="service-card">
+            <div>
+              <div class="service-header">
+                <h3 class="service-name">Eyebrows</h3>
+                <span class="service-price">$10</span>
+              </div>
+              <p class="service-desc">Clean eyebrow cleanup, middle trim, and razor shaping to sharpen your overall facial aesthetic.</p>
+            </div>
+            <div class="service-action">
+              <button type="button" class="btn btn-outline select-service-btn" data-service-id="eyebrows" style="width: 100%;">Select Service</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+       4. ABOUT SECTION
+       ========================================================================== -->
+    <section id="about" class="about-section section-padding" aria-labelledby="about-heading">
+      <div class="container">
+        <div class="about-layout">
+          <div class="about-box">
+            <h2 id="about-heading" class="section-title" style="margin-bottom: 1.5rem;">Appointment-Only Craft</h2>
+            <div class="about-text">
+              <p>At <strong>Red Pole Barbershop</strong>, we respect your time as much as your look. We operates strictly by appointment—eliminating crowded waiting rooms and delayed chairs.</p>
+              <p>Every cut includes a classic hot-towel steam treatment, straight-razor neck lineup, and personalized styling advice using top-tier barbershop products.</p>
+            </div>
+            
+            <ul class="feature-list" aria-label="Key Features">
+              <li class="feature-item">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Zero Wait Times
+              </li>
+              <li class="feature-item">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Hot-Towel Finish
+              </li>
+              <li class="feature-item">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Master Barbers
+              </li>
+              <li class="feature-item">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Easy Booking
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <blockquote style="border-left: 6px solid var(--barber-red); padding-left: 1.5rem; font-size: 1.4rem; font-family: var(--font-heading); color: var(--navy-ink); line-height: 1.3;">
+              "A sharp haircut doesn't just change your hair—it changes how you walk into the room."
+            </blockquote>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Checkered Divider -->
+    <div class="checkered-divider" aria-hidden="true"></div>
+
+    <!-- ==========================================================================
+       5. GALLERY SECTION (Scroll Snap Strip)
+       ========================================================================== -->
+    <section id="gallery" class="gallery-section section-padding" aria-labelledby="gallery-heading">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="gallery-heading" class="section-title">Shop Gallery</h2>
+          <p class="section-subtitle">Swipe or scroll horizontally to inspect our work & atmosphere.</p>
+        </div>
+
+        <div class="gallery-strip" role="region" aria-label="Photo Gallery Strip">
+          <figure class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=600&q=80" alt="Barber giving precise side fade haircut" loading="lazy">
+            <figcaption class="gallery-caption">Precision Fade Work</figcaption>
+          </figure>
+
+          <figure class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?auto=format&fit=crop&w=600&q=80" alt="Vintage leather barber chair in clean shop" loading="lazy">
+            <figcaption class="gallery-caption">Classic Leather Chairs</figcaption>
+          </figure>
+
+          <figure class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=600&q=80" alt="Barber styling beard with straight razor and cream" loading="lazy">
+            <figcaption class="gallery-caption">Straight Razor Beard Trim</figcaption>
+          </figure>
+
+          <figure class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=600&q=80" alt="Barber tools arranged neatly on leather mat" loading="lazy">
+            <figcaption class="gallery-caption">Sanitized Master Tools</figcaption>
+          </figure>
+
+          <figure class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=600&q=80" alt="Hot towel treatment applied to client face" loading="lazy">
+            <figcaption class="gallery-caption">Hot Towel Steam Service</figcaption>
+          </figure>
+
+          <figure class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1512690459411-b9245aed614b?auto=format&fit=crop&w=600&q=80" alt="Interior view of Red Pole Barbershop floor" loading="lazy">
+            <figcaption class="gallery-caption">The Red Pole Shop</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+       6. REVIEWS SECTION
+       ========================================================================== -->
+    <section id="reviews" class="reviews-section section-padding" aria-labelledby="reviews-heading">
+      <div class="container">
+        <div class="reviews-header">
+          <div>
+            <h2 id="reviews-heading" class="section-title">Client Feedback</h2>
+            <p class="section-subtitle">See why our regulars keep coming back.</p>
+          </div>
+          <span class="sample-tag">Sample Content</span>
+        </div>
+
+        <div class="reviews-grid">
+          <!-- Review 1 -->
+          <article class="review-card">
+            <p class="review-quote">"Best haircut in town, hands down. Booking online took 30 seconds, I walked in at 2:00 PM, and was in the chair at 2:01. Unbeatable."</p>
+            <div class="review-author">
+              <span>Marcus V.</span>
+              <span class="review-stars" aria-label="5 out of 5 stars">★★★★★</span>
+            </div>
+          </article>
+
+          <!-- Review 2 -->
+          <article class="review-card">
+            <p class="review-quote">"The hot towel beard trim service is top tier. Extremely clean line work and super relaxing environment. Highly recommended!"</p>
+            <div class="review-author">
+              <span>David K.</span>
+              <span class="review-stars" aria-label="5 out of 5 stars">★★★★★</span>
+            </div>
+          </article>
+
+          <!-- Review 3 -->
+          <article class="review-card">
+            <p class="review-quote">"No waiting around in a crowded room with awkward small talk. You book your slot, get a sharp cut, and get back to your day."</p>
+            <div class="review-author">
+              <span>Julian R.</span>
+              <span class="review-stars" aria-label="5 out of 5 stars">★★★★★</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+       7. BOOKING SECTION (MAIN INTERACTIVE FEATURE)
+       ========================================================================== -->
+    <section id="booking" class="booking-section section-padding" aria-labelledby="booking-heading">
+      <div class="container">
+        <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+          <h2 id="booking-heading" class="section-title">Reserve Your Seat</h2>
+          <p class="section-subtitle">Select your service, choose a date and time, and confirm instantly via WhatsApp.</p>
+        </div>
+
+        <div class="booking-wrapper">
+          <!-- Dynamic Validation Error Container -->
+          <div id="booking-error" class="error-region" role="alert" aria-live="polite"></div>
+
+          <!-- Interactive Booking Form -->
+          <form id="booking-form" class="booking-form" novalidate>
+            
+            <!-- STEP 1: Select Service -->
+            <fieldset class="form-step" style="border:none;">
+              <legend class="step-label">
+                <span class="step-number">1</span> Choose Service
+              </legend>
+              <div class="service-radio-group">
+                <div class="service-radio-card">
+                  <input type="radio" id="svc-haircut" name="service" value="Haircut" data-price="35" checked>
+                  <label for="svc-haircut" class="service-radio-label">
+                    <span class="service-radio-name">Haircut</span>
+                    <span class="service-radio-price">$35</span>
+                  </label>
+                </div>
+
+                <div class="service-radio-card">
+                  <input type="radio" id="svc-beard" name="service" value="Beard Trim" data-price="25">
+                  <label for="svc-beard" class="service-radio-label">
+                    <span class="service-radio-name">Beard Trim</span>
+                    <span class="service-radio-price">$25</span>
+                  </label>
+                </div>
+
+                <div class="service-radio-card">
+                  <input type="radio" id="svc-combo" name="service" value="Haircut + Beard" data-price="55">
+                  <label for="svc-combo" class="service-radio-label">
+                    <span class="service-radio-name">Haircut + Beard</span>
+                    <span class="service-radio-price">$55</span>
+                  </label>
+                </div>
+
+                <div class="service-radio-card">
+                  <input type="radio" id="svc-eyebrows" name="service" value="Eyebrows" data-price="10">
+                  <label for="svc-eyebrows" class="service-radio-label">
+                    <span class="service-radio-name">Eyebrows</span>
+                    <span class="service-radio-price">$10</span>
+                  </label>
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- STEP 2: Date Picker Strip (Next 7 Days) -->
+            <fieldset class="form-step" style="border:none;">
+              <legend class="step-label">
+                <span class="step-number">2</span> Select Date
+              </legend>
+              <div id="date-strip" class="date-strip" role="radiogroup" aria-label="Select date from next 7 days">
+                <!-- Dynamically populated via script.js -->
+              </div>
+            </fieldset>
+
+            <!-- STEP 3: Time Slot Grid -->
+            <fieldset class="form-step" style="border:none;">
+              <legend class="step-label">
+                <span class="step-number">3</span> Select Time Slot (30-min intervals)
+              </legend>
+              <div id="time-grid" class="time-grid" role="radiogroup" aria-label="Select appointment time">
+                <!-- Dynamically populated via script.js -->
+              </div>
+            </fieldset>
+
+            <!-- STEP 4: Client Contact Details -->
+            <fieldset class="form-step" style="border:none;">
+              <legend class="step-label">
+                <span class="step-number">4</span> Your Information
+              </legend>
+              <div class="input-grid">
+                <div class="form-group">
+                  <label for="client-name">Full Name *</label>
+                  <input type="text" id="client-name" name="clientName" placeholder="e.g. John Doe" required autocomplete="name">
+                </div>
+                <div class="form-group">
+                  <label for="client-phone">Phone Number *</label>
+                  <input type="tel" id="client-phone" name="clientPhone" placeholder="e.g. (555) 000-0000" required autocomplete="tel">
+                </div>
+              </div>
+            </fieldset>
+
+            <button type="submit" class="btn" style="width: 100%; font-size: 1.1rem; margin-top: 1rem;">
+              Complete Booking
+            </button>
+          </form>
+
+          <!-- Confirmation Card State -->
+          <div id="confirmation-card" class="confirmation-card" aria-live="polite">
+            <h3 class="section-title" style="color: var(--navy-ink); font-size: 2rem;">Booking Reserved!</h3>
+            <p>Your appointment details have been prepared. Click below to launch WhatsApp and finalize your booking with our shop manager.</p>
+
+            <div class="summary-box">
+              <div class="summary-row">
+                <span>Service:</span>
+                <strong id="sum-service">-</strong>
+              </div>
+              <div class="summary-row">
+                <span>Date:</span>
+                <strong id="sum-date">-</strong>
+              </div>
+              <div class="summary-row">
+                <span>Time Slot:</span>
+                <strong id="sum-time">-</strong>
+              </div>
+              <div class="summary-row">
+                <span>Client Name:</span>
+                <strong id="sum-name">-</strong>
+              </div>
+              <div class="summary-row">
+                <span>Total Price:</span>
+                <strong id="sum-price" style="color: var(--barber-red);">$0</strong>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; width: 100%; max-width: 420px; flex-wrap: wrap;">
+              <a id="whatsapp-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="flex: 1; min-width: 200px;">
+                Confirm via WhatsApp
+              </a>
+              <button type="button" id="reset-booking-btn" class="btn btn-outline" style="flex: 1; min-width: 140px;">
+                Book Another
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================================================
+     8. FOOTER SECTION
+     ========================================================================== -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="footer-logo">RED POLE <span style="color: var(--barber-red);">BARBERSHOP</span></a>
+          <p style="color: var(--pale-blue-gray); font-size: 0.95rem;">Sharp cuts. Clean lines. Zero waiting.</p>
+          <p style="color: #9CA3AF; font-size: 0.85rem; margin-top: 0.5rem;">
+            📍 123 Main Street, Your City, ST 00000<br>
+            📞 (555) 123-4567
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Hours of Operation</h4>
+          <ul class="footer-list">
+            <li>Monday – Saturday: 9:00 AM – 8:00 PM</li>
+            <li>Sunday: Closed</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Navigation</h4>
+          <ul class="footer-list">
+            <li><a href="#services">Services & Pricing</a></li>
+            <li><a href="#about">About Our Craft</a></li>
+            <li><a href="#gallery">Shop Gallery</a></li>
+            <li><a href="#reviews">Client Reviews</a></li>
+            <li><a href="#booking">Book Appointment</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="copyright">
+        &copy; <span id="copyright-year">2026</span> Red Pole Barbershop. All rights reserved. Built with pure precision.
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+     JAVASCRIPT LOGIC
+     ========================================================================== -->
+  <script>
+    /* ==========================================================================
+       RED POLE BARBERSHOP - CORE LOGIC & INTERACTION
+       ========================================================================== */
+
+    // Top Configuration Constant
+    const WHATSAPP_NUMBER = "15551234567";
+
+    // Global State
+    const bookingState = {
+      service: "Haircut",
+      price: "35",
+      selectedDate: null, // Date object
+      selectedTime: null  // string e.g., "10:30 AM"
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      initMobileMenu();
+      initLiveStatusIndicator();
+      initServiceSelection();
+      initDateStrip();
+      initBookingValidation();
+      
+      // Dynamic Footer Year
+      const yearSpan = document.getElementById("copyright-year");
+      if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+    });
+
+    /* --------------------------------------------------------------------------
+       1. Mobile Hamburger Menu Toggle
+       -------------------------------------------------------------------------- */
+    function initMobileMenu() {
+      const toggleBtn = document.getElementById("menu-toggle-btn");
+      const navLinks = document.getElementById("primary-nav");
+
+      if (!toggleBtn || !navLinks) return;
+
+      toggleBtn.addEventListener("click", () => {
+        const isExpanded = toggleBtn.getAttribute("aria-expanded") === "true";
+        toggleBtn.setAttribute("aria-expanded", !isExpanded);
+        navLinks.classList.toggle("mobile-open");
+      });
+
+      // Close mobile menu when link clicked
+      navLinks.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
+          navLinks.classList.remove("mobile-open");
+          toggleBtn.setAttribute("aria-expanded", "false");
+        });
+      });
+    }
+
+    /* --------------------------------------------------------------------------
+       2. Live Operating Hours Status ("Open now" / "Closed now")
+          - Mon-Sat: 9:00 AM - 8:00 PM
+          - Sun: Closed
+       -------------------------------------------------------------------------- */
+    function initLiveStatusIndicator() {
+      const indicator = document.getElementById("status-indicator");
+      const statusText = document.getElementById("status-text");
+      if (!indicator || !statusText) return;
+
+      const now = new Date();
+      const day = now.getDay(); // 0 = Sun, 1 = Mon, ..., 6 = Sat
+      const hour = now.getHours();
+      const minute = now.getMinutes();
+      const timeInMinutes = hour * 60 + minute;
+
+      const openTimeInMinutes = 9 * 60;   // 9:00 AM = 540
+      const closeTimeInMinutes = 20 * 60; // 8:00 PM = 1200
+
+      const isOpen = (day !== 0) && (timeInMinutes >= openTimeInMinutes && timeInMinutes < closeTimeInMinutes);
+
+      if (isOpen) {
+        indicator.className = "status-badge status-open";
+        statusText.textContent = "Open now • Mon-Sat 9am-8pm";
+      } else {
+        indicator.className = "status-badge status-closed";
+        statusText.textContent = "Closed now • Opens Mon at 9am";
+      }
+    }
+
+    /* --------------------------------------------------------------------------
+       3. Services Pre-Selection & Smooth Scroll Sync
+       -------------------------------------------------------------------------- */
+    function initServiceSelection() {
+      const serviceButtons = document.querySelectorAll(".select-service-btn");
+      
+      serviceButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const serviceId = btn.getAttribute("data-service-id");
+          let radioId = "svc-haircut";
+
+          if (serviceId === "beard") radioId = "svc-beard";
+          if (serviceId === "combo") radioId = "svc-combo";
+          if (serviceId === "eyebrows") radioId = "svc-eyebrows";
+
+          const radioEl = document.getElementById(radioId);
+          if (radioEl) {
+            radioEl.checked = true;
+            radioEl.dispatchEvent(new Event("change"));
+          }
+
+          // Smooth scroll to booking form
+          const bookingSection = document.getElementById("booking");
+          if (bookingSection) {
+            bookingSection.scrollIntoView({ behavior: "smooth" });
+          }
+        });
+      });
+
+      // Track Radio Changes
+      const serviceRadios = document.querySelectorAll('input[name="service"]');
+      serviceRadios.forEach(radio => {
+        radio.addEventListener("change", (e) => {
+          bookingState.service = e.target.value;
+          bookingState.price = e.target.getAttribute("data-price");
+        });
+      });
+    }
+
+    /* --------------------------------------------------------------------------
+       4. Date Picker Strip Generator (Next 7 Days, Local Timezone)
+       -------------------------------------------------------------------------- */
+    function initDateStrip() {
+      const dateStripContainer = document.getElementById("date-strip");
+      if (!dateStripContainer) return;
+
+      dateStripContainer.innerHTML = "";
+      const today = new Date();
+      let firstValidDate = null;
+
+      for (let i = 0; i < 7; i++) {
+        const currentDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
+        const dayOfWeek = currentDate.getDay(); // 0 = Sun
+        const isSunday = (dayOfWeek === 0);
+
+        // Check if today has remaining time slots (last slot 7:30 PM = 19:30)
+        let isTodayAndPast = false;
+        if (i === 0) {
+          const currentHour = today.getHours();
+          const currentMin = today.getMinutes();
+          // Buffer: if past 7:30 PM (19:30), no slots left
+          if (currentHour > 19 || (currentHour === 19 && currentMin >= 30)) {
+            isTodayAndPast = true;
+          }
+        }
+
+        const isDisabled = isSunday || isTodayAndPast;
+
+        // Date Formatting
+        const dayName = currentDate.toLocaleDateString("en-US", { weekday: "short" });
+        const dayNum = currentDate.getDate();
+        const monthName = currentDate.toLocaleDateString("en-US", { month: "short" });
+
+        const dateBtn = document.createElement("button");
+        dateBtn.type = "button";
+        dateBtn.className = "date-btn";
+        if (isDisabled) dateBtn.disabled = true;
+
+        dateBtn.innerHTML = `
+          <span class="date-day-name">${i === 0 ? 'Today' : dayName}</span>
+          <span class="date-num">${dayNum}</span>
+          <span class="date-month">${monthName}</span>
+        `;
+
+        dateBtn.addEventListener("click", () => {
+          if (isDisabled) return;
+          
+          document.querySelectorAll(".date-btn").forEach(b => b.classList.remove("selected"));
+          dateBtn.classList.add("selected");
+          bookingState.selectedDate = currentDate;
+
+          // Re-render time slots for newly selected date
+          generateTimeSlots(currentDate);
+        });
+
+        dateStripContainer.appendChild(dateBtn);
+
+        // Auto-select first available valid date
+        if (!isDisabled && !firstValidDate) {
+          firstValidDate = { btn: dateBtn, date: currentDate };
+        }
+      }
+
+      if (firstValidDate) {
+        firstValidDate.btn.click();
+      } else {
+        // If all 7 days disabled (unlikely), render empty slots
+        generateTimeSlots(null);
+      }
+    }
+
+    /* --------------------------------------------------------------------------
+       5. Time Slot Grid Generator (9:00 AM to 7:30 PM, 30-min intervals)
+       -------------------------------------------------------------------------- */
+    function generateTimeSlots(selectedDate) {
+      const timeGridContainer = document.getElementById("time-grid");
+      if (!timeGridContainer) return;
+
+      timeGridContainer.innerHTML = "";
+      bookingState.selectedTime = null;
+
+      if (!selectedDate) {
+        timeGridContainer.innerHTML = "<p style='font-size:0.9rem; color:#6B7280;'>No operating slots available.</p>";
+        return;
+      }
+
+      const now = new Date();
+      const isToday = selectedDate.toDateString() === now.toDateString();
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+      const bufferMinutes = 30; // 30 min buffer for today
+
+      // Generate slots from 09:00 (540 mins) to 19:30 (1170 mins)
+      const startMins = 9 * 60;
+      const endMins = 19 * 60 + 30;
+
+      for (let mins = startMins; mins <= endMins; mins += 30) {
+        const slotHour = Math.floor(mins / 60);
+        const slotMin = mins % 60;
+
+        // Format to AM/PM
+        const period = slotHour >= 12 ? "PM" : "AM";
+        const displayHour = slotHour % 12 === 0 ? 12 : slotHour % 12;
+        const displayMin = slotMin === 0 ? "00" : slotMin;
+        const timeString = `${displayHour}:${displayMin} ${period}`;
+
+        // Disable logic for today
+        let isPassed = false;
+        if (isToday) {
+          if (mins <= (currentMinutes + bufferMinutes)) {
+            isPassed = true;
+          }
+        }
+
+        const slotBtn = document.createElement("button");
+        slotBtn.type = "button";
+        slotBtn.className = "time-slot-btn";
+        slotBtn.setAttribute("aria-pressed", "false");
+        slotBtn.textContent = timeString;
+
+        if (isPassed) {
+          slotBtn.disabled = true;
+        } else {
+          slotBtn.addEventListener("click", () => {
+            document.querySelectorAll(".time-slot-btn").forEach(b => {
+              b.classList.remove("selected");
+              b.setAttribute("aria-pressed", "false");
+            });
+            slotBtn.classList.add("selected");
+            slotBtn.setAttribute("aria-pressed", "true");
+            bookingState.selectedTime = timeString;
+          });
+        }
+
+        timeGridContainer.appendChild(slotBtn);
+      }
+    }
+
+    /* --------------------------------------------------------------------------
+       6. Booking Validation & Submission Logic
+       -------------------------------------------------------------------------- */
+    function initBookingValidation() {
+      const form = document.getElementById("booking-form");
+      const errorRegion = document.getElementById("booking-error");
+      const confirmCard = document.getElementById("confirmation-card");
+      const resetBtn = document.getElementById("reset-booking-btn");
+
+      if (!form) return;
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        errorRegion.textContent = "";
+
+        // 1. Validate Date
+        if (!bookingState.selectedDate) {
+          showError("Please select an available booking date.");
+          return;
+        }
+
+        // 2. Validate Time Slot
+        if (!bookingState.selectedTime) {
+          showError("Please select a time slot for your appointment.");
+          return;
+        }
+
+        // 3. Validate Contact Inputs
+        const nameInput = document.getElementById("client-name");
+        const phoneInput = document.getElementById("client-phone");
+
+        const nameVal = nameInput ? nameInput.value.trim() : "";
+        const phoneVal = phoneInput ? phoneInput.value.trim() : "";
+
+        if (!nameVal) {
+          showError("Please enter your full name.");
+          if (nameInput) nameInput.focus();
+          return;
+        }
+
+        if (!phoneVal || phoneVal.length < 7) {
+          showError("Please enter a valid phone number.");
+          if (phoneInput) phoneInput.focus();
+          return;
+        }
+
+        // All Validated -> Render Summary
+        renderConfirmation(nameVal, phoneVal);
+      });
+
+      function showError(msg) {
+        if (errorRegion) {
+          errorRegion.textContent = `⚠️ Error: ${msg}`;
+          errorRegion.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }
+
+      function renderConfirmation(name, phone) {
+        const formattedDate = bookingState.selectedDate.toLocaleDateString("en-US", {
+          weekday: "long",
+          month: "short",
+          day: "numeric",
+          year: "numeric"
+        });
+
+        document.getElementById("sum-service").textContent = bookingState.service;
+        document.getElementById("sum-date").textContent = formattedDate;
+        document.getElementById("sum-time").textContent = bookingState.selectedTime;
+        document.getElementById("sum-name").textContent = name;
+        document.getElementById("sum-price").textContent = `$${bookingState.price}`;
+
+        // Build WhatsApp Prefilled Message
+        const message = `Hello Red Pole Barbershop! I would like to confirm my appointment:
+• Service: ${bookingState.service} ($${bookingState.price})
+• Date: ${formattedDate}
+• Time: ${bookingState.selectedTime}
+• Name: ${name}
+• Phone: ${phone}`;
+
+        const encodedMsg = encodeURIComponent(message);
+        const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMsg}`;
+
+        const waBtn = document.getElementById("whatsapp-btn");
+        if (waBtn) waBtn.href = waUrl;
+
+        // Hide Form, Show Confirmation Card
+        form.style.display = "none";
+        if (confirmCard) {
+          confirmCard.classList.add("active");
+          confirmCard.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+
+      if (resetBtn) {
+        resetBtn.addEventListener("click", () => {
+          form.reset();
+          form.style.display = "flex";
+          if (confirmCard) confirmCard.classList.remove("active");
+          initDateStrip(); // Reset date & time selections
+        });
+      }
+    }
+  </script>
+</body>
+</html>
